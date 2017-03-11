@@ -28,7 +28,7 @@ func TestLogin(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !strings.Contains(string(body), "<title>Home :: af83</title>") {
+	if !strings.Contains(string(body), "here is your time for the week") {
 		t.Error("Login failed, got ", body)
 	}
 }
