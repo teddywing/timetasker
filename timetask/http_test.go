@@ -3,6 +3,7 @@ package timetask
 import (
 	"flag"
 	"io/ioutil"
+	"strings"
 	"testing"
 )
 
@@ -16,9 +17,18 @@ func init() {
 }
 
 func TestLogin(t *testing.T) {
-	response, _ := Login(username, password)
+	response, err := Login(username, password)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	defer response.Body.Close()
-	body, _ := ioutil.ReadAll(response.Body)
-	t.Log(response)
-	t.Logf("%s", body)
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !strings.Contains(string(body), "<title>Home :: af83</title>") {
+		t.Error("Login failed, got ", body)
+	}
 }
