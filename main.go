@@ -37,13 +37,17 @@ type Config struct {
 	}
 }
 
+var config Config
+
 func main() {
+	loadConfig()
+}
+
+func loadConfig() {
 	config_str, err := ioutil.ReadFile("config.yml")
-	config := Config{}
+	config = Config{}
 	err = yaml.Unmarshal(config_str, &config)
 	if err != nil {
 		log.Println(err)
 	}
-
-	log.Printf("%+v", config)
 }
