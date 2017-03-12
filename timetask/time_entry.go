@@ -8,6 +8,7 @@ type TimeEntry struct {
 	Task        string
 	WorkType    string `yaml:"work_type"`
 	Date        time.Time
+	Time        uint
 	Billable    bool
 	Description string
 }
