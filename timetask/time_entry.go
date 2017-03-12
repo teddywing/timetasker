@@ -34,7 +34,7 @@ func (te *TimeEntry) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	}
 
 	date, err := time.Parse("2006-01-02", auxiliary.Date)
-	if err != nil {
+	if auxiliary.Date != "" && err != nil {
 		return err
 	}
 
