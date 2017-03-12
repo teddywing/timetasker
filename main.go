@@ -1,10 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
-	"gopkg.in/yaml.v1"
+	"com.teddywing/timetasker/timetask"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
@@ -41,6 +45,25 @@ var config Config
 
 func main() {
 	loadConfig()
+
+	if len(os.Args) == 1 {
+		fmt.Println("Not enough arguments")
+		os.Exit(1)
+	}
+
+	file_path := os.Args[len(os.Args)-1]
+	file, err := ioutil.ReadFile(file_path)
+	if err != nil {
+		log.Println(err)
+	}
+
+	time_entries := []timetask.TimeEntry{}
+	err = yaml.Unmarshal(file, &time_entries)
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Printf("%+v", time_entries)
 }
 
 func loadConfig() {
