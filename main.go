@@ -42,6 +42,8 @@ func main() {
 	}
 
 	log.Printf("%+v", time_entries)
+
+	timetask.SubmitTimeEntries(config.Fields, time_entries)
 }
 
 func loadConfig() {
