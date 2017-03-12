@@ -16,29 +16,7 @@ type Config struct {
 		Username    string
 		PasswordCmd string `yaml:"password_cmd"`
 	}
-	Fields struct {
-		PersonID uint `yaml:"person_id"`
-		Clients  []struct {
-			ID       uint
-			Name     string
-			Projects []struct {
-				ID      uint
-				Name    string
-				Modules []struct {
-					ID   uint
-					Name string
-				}
-				Tasks []struct {
-					ID   uint
-					Name string
-				}
-				WorkTypes []struct {
-					ID   uint
-					Name string
-				} `yaml:"work_types"`
-			}
-		}
-	}
+	Fields timetask.Fields
 }
 
 var config Config
