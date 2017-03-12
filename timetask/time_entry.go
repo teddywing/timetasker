@@ -5,6 +5,7 @@ import "time"
 type TimeEntry struct {
 	Client      string
 	Project     string
+	Module      string
 	Task        string
 	WorkType    string `yaml:"work_type"`
 	Date        time.Time
@@ -18,6 +19,7 @@ func (te *TimeEntry) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	var auxiliary struct {
 		Client      string
 		Project     string
+		Module      string
 		Task        string
 		WorkType    string `yaml:"work_type"`
 		Date        string
@@ -38,6 +40,7 @@ func (te *TimeEntry) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
 	te.Client = auxiliary.Client
 	te.Project = auxiliary.Project
+	te.Module = auxiliary.Module
 	te.Task = auxiliary.Task
 	te.WorkType = auxiliary.WorkType
 	te.Date = date
