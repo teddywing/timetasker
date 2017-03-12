@@ -16,7 +16,8 @@ type Config struct {
 		Username    string
 		PasswordCmd string `yaml:"password_cmd"`
 	}
-	Fields timetask.Fields
+	Fields   timetask.Fields
+	Defaults timetask.TimeEntry
 }
 
 var config Config
@@ -43,7 +44,9 @@ func main() {
 
 	log.Printf("%+v", time_entries)
 
-	timetask.SubmitTimeEntries(config.Fields, time_entries)
+	// timetask.SubmitTimeEntries(config.Fields, time_entries)
+
+	timetask.GenerateWeeklyTimesheet(os.Stdout, config.Defaults)
 }
 
 func loadConfig() {
