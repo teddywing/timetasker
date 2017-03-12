@@ -21,6 +21,7 @@ func (te *TimeEntry) UnmarshalYAML(unmarshal func(interface{}) error) error {
 		Task        string
 		WorkType    string `yaml:"work_type"`
 		Date        string
+		Time        uint
 		Billable    bool
 		Description string
 	}
@@ -40,6 +41,7 @@ func (te *TimeEntry) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	te.Task = auxiliary.Task
 	te.WorkType = auxiliary.WorkType
 	te.Date = date
+	te.Time = auxiliary.Time
 	te.Billable = auxiliary.Billable
 	te.Description = auxiliary.Description
 
