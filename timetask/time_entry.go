@@ -9,7 +9,7 @@ type TimeEntry struct {
 	Task        string
 	WorkType    string `yaml:"work_type"`
 	Date        time.Time
-	Time        uint
+	Time        int
 	Billable    bool
 	Description string
 }
@@ -23,7 +23,7 @@ func (te *TimeEntry) UnmarshalYAML(unmarshal func(interface{}) error) error {
 		Task        string
 		WorkType    string `yaml:"work_type"`
 		Date        string
-		Time        uint
+		Time        int
 		Billable    bool
 		Description string
 	}

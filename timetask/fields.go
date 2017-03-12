@@ -3,13 +3,13 @@ package timetask
 import "fmt"
 
 type Client struct {
-	ID       uint
+	ID       int
 	Name     string
 	Projects []Project
 }
 
 type Project struct {
-	ID        uint
+	ID        int
 	Name      string
 	Modules   []Module
 	Tasks     []Task
@@ -17,20 +17,20 @@ type Project struct {
 }
 
 type Module struct {
-	ID   uint
+	ID   int
 	Name string
 }
 type Task struct {
-	ID   uint
+	ID   int
 	Name string
 }
 type WorkType struct {
-	ID   uint
+	ID   int
 	Name string
 }
 
 type Fields struct {
-	PersonID uint `yaml:"person_id"`
+	PersonID int `yaml:"person_id"`
 	Clients  []Client
 }
 
