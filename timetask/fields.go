@@ -34,17 +34,6 @@ type Fields struct {
 	Clients  []Client
 }
 
-// func thingByName(things []interface{}, name string) (*interface{}, error) {
-// 	for _, thing := range things {
-// 		t = IDName(thing.(IDName))
-// 		if t.Name == name {
-// 			return &thing, nil
-// 		}
-// 	}
-//
-// 	return nil, fmt.Errorf("Thing not found")
-// }
-
 func (f *Fields) ClientByName(client_name string) (*Client, error) {
 	for _, client := range f.Clients {
 		if client.Name == client_name {
