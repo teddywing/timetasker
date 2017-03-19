@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"com.teddywing/timetasker/timetask"
+	"github.com/teddywing/timetasker/timetask"
 
 	"gopkg.in/yaml.v2"
 )
