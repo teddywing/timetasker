@@ -32,7 +32,6 @@ func main() {
 		"Project alias defined in config.toml.",
 	).
 		Short('p').
-		Required().
 		String()
 	time_spent := kingpin.Flag("time", "Time spent working on project.").
 		Short('t').
@@ -52,6 +51,10 @@ func main() {
 		Bool()
 	kingpin.Version(VERSION)
 	kingpin.Parse()
+
+	if *project_alias == "" && !*write_config {
+		kingpin.Fatalf("required flag --project not provided, try --help")
+	}
 
 	if *write_config {
 		err = maybeWriteConfig()
