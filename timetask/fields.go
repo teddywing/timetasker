@@ -21,7 +21,7 @@ type Project struct {
 	Project  int
 	Module   int
 	Task     int
-	WorkType int
+	WorkType int `toml:"work_type"`
 	Time     int
 	Billable bool
 }
