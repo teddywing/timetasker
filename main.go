@@ -1,10 +1,8 @@
 package main
 
 import (
-	// "fmt"
 	"io/ioutil"
 	"log"
-	// "os"
 	"time"
 
 	"github.com/teddywing/timetasker/timetask"

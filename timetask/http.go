@@ -1,13 +1,10 @@
 package timetask
 
 import (
-	// "fmt"
-	// "log"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
 	"strconv"
-	// "strings"
 
 	"golang.org/x/net/publicsuffix"
 )
