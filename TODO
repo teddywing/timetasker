@@ -7,7 +7,8 @@ v Command line arguments: (2017.06.03)
 	v Date (optional, format: 2017-01-31)
 	v Description (optional)
 
-- Handle failing responses from the server (show errors to the user)
+v Handle failing responses from the server (show errors to the user)
+  (2017.06.03)
 v Config (2017.06.03)
 	v A `--write-config` or similar option that generates and write a bare
 	  config for users to use
