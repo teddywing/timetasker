@@ -19,3 +19,5 @@ v Make `PasswordCmd` work
 - Request and list module IDs and names for a given project alias
 
 v Format float error ("700") (2017.06.03)
+
+- Move HTTP errors into http.go
