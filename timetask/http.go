@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	// "strconv"
+	"strconv"
 	// "strings"
 
 	"golang.org/x/net/publicsuffix"
@@ -51,97 +51,65 @@ func SubmitTimeEntries(fields Fields, time_entries []TimeEntry) (resp *http.Resp
 	return nil, nil
 }
 
-func buildSubmissionParams(fields Fields, time_entries []TimeEntry) url.Values {
+func buildSubmissionParams(profile Profile, time_entry TimeEntry) url.Values {
 	v := url.Values{}
-	entry_indexes := []string{}
 
-	for i, entry := range time_entries {
-		entry_indexes = append(entry_indexes, strconv.Itoa(i))
+	v.Set(
+		"f_personID0",
+		strconv.Itoa(profile.PersonID),
+	)
 
-		client, err := fields.ClientByName(entry.Client)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_clientID0",
+		strconv.Itoa(time_entry.Client),
+	)
 
-		project, err := client.ProjectByName(entry.Project)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_projectID0",
+		strconv.Itoa(time_entry.Project),
+	)
 
-		module, err := project.ModuleByName(entry.Module)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_moduleID0",
+		strconv.Itoa(time_entry.Module),
+	)
 
-		task, err := project.TaskByName(entry.Task)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_taskID0",
+		strconv.Itoa(time_entry.Task),
+	)
 
-		work_type, err := project.WorkTypeByName(entry.WorkType)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_worktypeID0",
+		strconv.Itoa(time_entry.WorkType),
+	)
 
-		var billable string
-		if entry.Billable {
-			billable = "t"
-		} else {
-			billable = "f"
-		}
+	v.Set(
+		"f_date0",
+		time_entry.Date.Format("02/01/06"), // day/month/year
+	)
 
-		v.Set(
-			fmt.Sprintf("f_personID%d", i),
-			strconv.Itoa(fields.PersonID),
-		)
+	v.Set(
+		"f_time0",
+		strconv.Itoa(time_entry.Time),
+	)
 
-		v.Set(
-			fmt.Sprintf("f_clientID%d", i),
-			strconv.Itoa(client.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_projectID%d", i),
-			strconv.Itoa(project.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_moduleID%d", i),
-			strconv.Itoa(module.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_taskID%d", i),
-			strconv.Itoa(task.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_worktypeID%d", i),
-			strconv.Itoa(work_type.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_date%d", i),
-			entry.Date.Format("02/01/06"), // day/month/year
-		)
-
-		v.Set(
-			fmt.Sprintf("f_time%d", i),
-			strconv.Itoa(entry.Time),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_billable%d", i),
-			billable,
-		)
-
-		v.Set(
-			fmt.Sprintf("f_description%d", i),
-			entry.Description,
-		)
+	var billable string
+	if time_entry.Billable {
+		billable = "t"
+	} else {
+		billable = "f"
 	}
 
-	v.Set("f_entryIndexes", strings.Join(entry_indexes, ","))
+	v.Set(
+		"f_billable0",
+		billable,
+	)
+
+	v.Set(
+		"f_description0",
+		time_entry.Description,
+	)
 
 	return v
 }
