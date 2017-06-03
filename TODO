@@ -16,3 +16,5 @@ v Command line arguments: (2017.06.03)
 - Make `PasswordCmd` work
 
 - Request and list module IDs and names for a given project alias
+
+- Format float error ("700")
