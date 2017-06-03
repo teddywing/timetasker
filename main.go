@@ -15,7 +15,7 @@ import (
 type Config struct {
 	Auth struct {
 		Username    string
-		PasswordCmd string
+		PasswordCmd string `toml:"password_cmd"`
 	}
 	Profile timetask.Profile
 	Projects map[string]timetask.Project
