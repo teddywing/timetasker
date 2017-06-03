@@ -38,16 +38,24 @@ work_type = # ADD WORK TYPE ID
 billable = true
 `
 
+func configDir() string {
+	return filepath.Join(xdg.ConfigHome, "timetasker")
+}
+
+func configFile() string {
+	return filepath.Join(configDir(), "config.toml")
+}
+
 func maybeWriteConfig() error {
 	path := xdg.FindConfig("timetasker/config.toml")
 
 	if path == "" {
-		path = filepath.Join(xdg.ConfigHome, "timetasker")
+		path = configDir()
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			os.Mkdir(path, 0700)
 		}
 
-		config_path := filepath.Join(path, "config.toml")
+		config_path := configFile()
 		err := ioutil.WriteFile(config_path, []byte(emptyConfig), 0644)
 		if err != nil {
 			return err
