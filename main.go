@@ -17,7 +17,7 @@ type Config struct {
 		Username    string
 		PasswordCmd string `toml:"password_cmd"`
 	}
-	Profile timetask.Profile
+	Profile  timetask.Profile
 	Projects map[string]timetask.Project
 }
 

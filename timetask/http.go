@@ -62,7 +62,6 @@ func SubmitTimeEntry(
 	return resp, nil
 }
 
-
 func buildSubmissionParams(time_entry TimeEntry) url.Values {
 	v := url.Values{}
 
