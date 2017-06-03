@@ -13,7 +13,7 @@ type moduleXML struct {
 	Modules []Module `xml:"response>item"`
 }
 
-func ParseXML(xml_str string) ([]Module, error) {
+func ModuleParseXML(xml_str string) ([]Module, error) {
 	modules := moduleXML{}
 	err := xml.Unmarshal([]byte(xml_str), &modules)
 	if err != nil {

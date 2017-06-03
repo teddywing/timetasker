@@ -20,8 +20,8 @@ const modules_xml = `<?xml version="1.0" encoding="UTF-8" ?>
 			</response>
 </ajax-response>`
 
-func TestParseXML(t *testing.T) {
-	modules, err := ParseXML(modules_xml)
+func TestModuleParseXML(t *testing.T) {
+	modules, err := ModuleParseXML(modules_xml)
 	if err != nil {
 		t.Error(err)
 	}
