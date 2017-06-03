@@ -8,6 +8,7 @@ import (
 	"github.com/teddywing/timetasker/timetask"
 
 	"github.com/BurntSushi/toml"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type Config struct {
@@ -24,6 +25,27 @@ var config Config
 func main() {
 	loadConfig()
 
+	// Parse command line arguments
+	project_alias := kingpin.Flag(
+		"project",
+		"Project alias defined in config.toml.",
+	).
+		Short('p').
+		Required().
+		String()
+	time_spent := kingpin.Flag("time", "Time spent working on project.").
+		Short('t').
+		Default("7").
+		Int()
+	date := kingpin.Flag("date", "Date when work was done (e.g. 2017-01-31)").
+		String()
+	description := kingpin.Flag("description", "Description of work.").
+		Short('m').
+		String()
+	kingpin.Version("0.1.0")
+	kingpin.Parse()
+
+	// Submit time entry
 	resp, client, err := timetask.Login(
 		config.Auth.Username,
 		config.Auth.PasswordCmd,
