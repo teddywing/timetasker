@@ -67,7 +67,7 @@ func maybeWriteConfig() error {
 
 func loadConfig() error {
 	config = Config{}
-	_, err := toml.DecodeFile("config2.toml", &config)
+	_, err := toml.DecodeFile(configFile(), &config)
 	if err != nil {
 		return err
 	}
