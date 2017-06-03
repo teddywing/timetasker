@@ -2,13 +2,18 @@ package main
 
 import (
 	"io/ioutil"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/teddywing/timetasker/timetask"
 
 	"github.com/BurntSushi/toml"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
+
+var VERSION string = "0.1.0"
 
 type Config struct {
 	Auth struct {
@@ -22,7 +27,58 @@ type Config struct {
 var config Config
 
 func main() {
+	var err error
+
 	loadConfig()
+
+	// Parse command line arguments
+	project_alias := kingpin.Flag(
+		"project",
+		"Project alias defined in config.toml.",
+	).
+		Short('p').
+		Required().
+		String()
+	time_spent := kingpin.Flag("time", "Time spent working on project.").
+		Short('t').
+		Default("7").
+		Float()
+	date_str := kingpin.Flag("date", "Date when work was done (e.g. 2017-01-31)").
+		Short('d').
+		String()
+	description := kingpin.Flag("description", "Description of work.").
+		Short('m').
+		String()
+	kingpin.Version(VERSION)
+	kingpin.Parse()
+
+	// Submit time entry
+	project, ok := config.Projects[*project_alias]
+	if !ok {
+		fmt.Printf("Project '%s' not found\n", *project_alias)
+		os.Exit(1)
+	}
+
+	var date time.Time
+
+	// If the date argument isn't sent, default to today
+	if *date_str == "" {
+		date = time.Now()
+	} else {
+		date, err = time.Parse("2006-01-02", *date_str)
+		if err != nil {
+			fmt.Printf("Date '%s' could not be parsed. Example: -d 2017-01-31\n", *date_str)
+			os.Exit(1)
+		}
+	}
+
+	time_entry := timetask.NewTimeEntry(
+		config.Profile,
+		project,
+		date,
+		*time_spent,
+		*description,
+	)
 
 	resp, client, err := timetask.Login(
 		config.Auth.Username,
@@ -37,13 +93,6 @@ func main() {
 	body, err := ioutil.ReadAll(resp.Body)
 	log.Println(string(body))
 
-	time_entry := timetask.NewTimeEntry(
-		config.Profile,
-		config.Projects["example"],
-		time.Now(),
-		7,
-		"timetasker test",
-	)
 	resp, err = timetask.SubmitTimeEntry(*client, time_entry)
 	if err != nil {
 		log.Fatalln(err)
