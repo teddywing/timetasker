@@ -20,4 +20,4 @@ v Request and list module IDs and names for a given project alias (2017.06.03)
 
 v Format float error ("700") (2017.06.03)
 
-- Move HTTP errors into http.go
+v Move HTTP errors into http.go (2017.06.03)
