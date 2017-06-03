@@ -20,11 +20,7 @@ func main() {
 	var err error
 
 	err = loadConfig()
-	if err != nil {
-		fmt.Println("Could not load config file")
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	kingpin.FatalIfError(err, "Could not load config file")
 
 	// Parse command line arguments
 	project_alias := kingpin.Flag(
@@ -58,18 +54,14 @@ func main() {
 
 	if *write_config {
 		err = maybeWriteConfig()
-		if err != nil {
-			fmt.Println("Could not write config file")
-			fmt.Println(err)
-			os.Exit(1)
-		}
+		kingpin.FatalIfError(err, "Could not write config file")
 
 		os.Exit(0)
 	}
 	// Submit time entry
 	project, ok := config.Projects[*project_alias]
 	if !ok {
-		fmt.Printf("Project '%s' not found\n", *project_alias)
+		kingpin.Errorf("project '%s' not found", *project_alias)
 		os.Exit(1)
 	}
 
@@ -80,10 +72,11 @@ func main() {
 		date = time.Now()
 	} else {
 		date, err = time.Parse("2006-01-02", *date_str)
-		if err != nil {
-			fmt.Printf("Date '%s' could not be parsed. Example: -d 2017-01-31\n", *date_str)
-			os.Exit(1)
-		}
+		kingpin.FatalIfError(
+			err,
+			"Date '%s' could not be parsed. Example: -d 2017-01-31\n",
+			*date_str,
+		)
 	}
 
 	time_entry := timetask.NewTimeEntry(
@@ -98,9 +91,7 @@ func main() {
 		config.Auth.Username,
 		config.Auth.PasswordCmd,
 	)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	kingpin.FatalIfError(err, "Login request failed")
 	log.Printf("%+v\n", resp)
 
 	defer resp.Body.Close()
@@ -108,9 +99,7 @@ func main() {
 	log.Println(string(body))
 
 	resp, err = timetask.SubmitTimeEntry(*client, time_entry)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	kingpin.FatalIfError(err, "Time entry submission request failed")
 	log.Printf("%+v\n", resp)
 
 	defer resp.Body.Close()
