@@ -13,6 +13,8 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+var VERSION string = "0.1.0"
+
 type Config struct {
 	Auth struct {
 		Username    string
@@ -47,7 +49,7 @@ func main() {
 	description := kingpin.Flag("description", "Description of work.").
 		Short('m').
 		String()
-	kingpin.Version("0.1.0")
+	kingpin.Version(VERSION)
 	kingpin.Parse()
 
 	// Submit time entry
