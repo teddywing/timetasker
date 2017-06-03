@@ -1,10 +1,8 @@
 package main
 
 import (
-	// "fmt"
 	"io/ioutil"
 	"log"
-	// "os"
 	"time"
 
 	"github.com/teddywing/timetasker/timetask"
@@ -17,7 +15,7 @@ type Config struct {
 		Username    string
 		PasswordCmd string `toml:"password_cmd"`
 	}
-	Profile timetask.Profile
+	Profile  timetask.Profile
 	Projects map[string]timetask.Project
 }
 
@@ -55,29 +53,6 @@ func main() {
 	defer resp.Body.Close()
 	body, err = ioutil.ReadAll(resp.Body)
 	log.Println(string(body))
-
-	// if len(os.Args) == 1 {
-	// 	fmt.Println("Not enough arguments")
-	// 	os.Exit(1)
-	// }
-	//
-	// file_path := os.Args[len(os.Args)-1]
-	// file, err := ioutil.ReadFile(file_path)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
-	// time_entries := []timetask.TimeEntry{}
-	// err = yaml.Unmarshal(file, &time_entries)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	//
-	// log.Printf("%+v", time_entries)
-
-	// timetask.SubmitTimeEntries(config.Fields, time_entries)
-
-	// timetask.GenerateWeeklyTimesheet(os.Stdout, config.Defaults)
 }
 
 func loadConfig() {

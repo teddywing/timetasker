@@ -23,15 +23,15 @@ func NewTimeEntry(
 	description string,
 ) TimeEntry {
 	return TimeEntry{
-		PersonID: profile.PersonID,
-		Client: project.Client,
-		Project: project.Project,
-		Module: project.Module,
-		Task: project.Task,
-		WorkType: project.WorkType,
-		Date: date,
-		Time: time,
-		Billable: project.Billable,
+		PersonID:    profile.PersonID,
+		Client:      project.Client,
+		Project:     project.Project,
+		Module:      project.Module,
+		Task:        project.Task,
+		WorkType:    project.WorkType,
+		Date:        date,
+		Time:        time,
+		Billable:    project.Billable,
 		Description: description,
 	}
 }

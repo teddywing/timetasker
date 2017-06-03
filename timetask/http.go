@@ -1,13 +1,10 @@
 package timetask
 
 import (
-	// "fmt"
-	// "log"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
 	"strconv"
-	// "strings"
 
 	"golang.org/x/net/publicsuffix"
 )
@@ -61,7 +58,6 @@ func SubmitTimeEntry(
 
 	return resp, nil
 }
-
 
 func buildSubmissionParams(time_entry TimeEntry) url.Values {
 	v := url.Values{}
