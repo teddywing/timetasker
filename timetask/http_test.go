@@ -19,7 +19,7 @@ func init() {
 func TestLogin(t *testing.T) {
 	t.Skip("No requests")
 
-	response, err := Login(username, password)
+	response, _, err := Login(username, password)
 	if err != nil {
 		t.Fatal(err)
 	}
