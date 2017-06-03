@@ -19,9 +19,6 @@ var config Config
 func main() {
 	var err error
 
-	err = loadConfig()
-	kingpin.FatalIfError(err, "Could not load config file")
-
 	// Parse command line arguments
 	project_alias := kingpin.Flag(
 		"project",
@@ -58,6 +55,10 @@ func main() {
 
 		os.Exit(0)
 	}
+
+	err = loadConfig()
+	kingpin.FatalIfError(err, "could not load config file, try --write-config")
+
 	// Submit time entry
 	project, ok := config.Projects[*project_alias]
 	if !ok {
