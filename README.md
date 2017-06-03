@@ -2,11 +2,10 @@ Timetasker CLI
 ==============
 
 Provides a nice command line interface to submit time sheets using [Time
-Task](https://timetask.com). This command will submit a single time entry.
+Task][1]. This command will submit a single time entry.
 
-The project improves upon a [Chrome
-extension](https://github.com/teddywing/chrome-timetasker) that auto-fills the
-time sheet form on the website.
+The project improves upon a [Chrome extension][2] that auto-fills the time sheet
+form on the website.
 
 
 ## Usage
@@ -110,4 +109,6 @@ Copyright © 2017 Teddy Wing. Licensed under the GNU GPLv3+ (see the included
 COPYING file).
 
 
+[1]: https://timetask.com
+[2]: https://github.com/teddywing/chrome-timetasker
 [3]: https://github.com/teddywing/timetasker/releases
