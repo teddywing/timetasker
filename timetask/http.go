@@ -1,6 +1,8 @@
 package timetask
 
 import (
+	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
@@ -160,5 +162,18 @@ func RequestModules(
 	}
 	response_body := string(body)
 
-	return response_body, nil
+	modules, err := ModuleParseXML(response_body)
+	if err != nil {
+		return "", err
+	}
+
+	var module_buf bytes.Buffer
+	module_buf.WriteString("ID\tModule\n")
+	for _, module := range modules {
+		module_buf.WriteString(
+			fmt.Sprintf("%d\t%s\n", module.ID, module.Name),
+		)
+	}
+
+	return module_buf.String(), nil
 }
