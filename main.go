@@ -26,7 +26,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	loadConfig()
+	err = loadConfig()
+	if err != nil {
+		fmt.Println("Could not load config file")
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	// Parse command line arguments
 	project_alias := kingpin.Flag(
