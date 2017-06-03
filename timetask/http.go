@@ -37,11 +37,9 @@ func Login(username, password string) (resp *http.Response, err error) {
 }
 
 func SubmitTimeEntry(
-	profile Profile,
-	project Project,
 	time_entry TimeEntry,
 ) (resp *http.Response, err error) {
-	v := buildSubmissionParams(profile, time_entry)
+	v := buildSubmissionParams(time_entry)
 
 	v.Set("module", "time")
 	v.Set("action", "submitmultipletime")
@@ -50,12 +48,12 @@ func SubmitTimeEntry(
 }
 
 
-func buildSubmissionParams(profile Profile, time_entry TimeEntry) url.Values {
+func buildSubmissionParams(time_entry TimeEntry) url.Values {
 	v := url.Values{}
 
 	v.Set(
 		"f_personID0",
-		strconv.Itoa(profile.PersonID),
+		strconv.Itoa(time_entry.PersonID),
 	)
 
 	v.Set(
