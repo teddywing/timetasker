@@ -51,7 +51,7 @@ func main() {
 
 	if *write_config {
 		err = maybeWriteConfig()
-		kingpin.FatalIfError(err, "Could not write config file")
+		kingpin.FatalIfError(err, "could not write config file")
 
 		os.Exit(0)
 	}
@@ -75,7 +75,7 @@ func main() {
 		date, err = time.Parse("2006-01-02", *date_str)
 		kingpin.FatalIfError(
 			err,
-			"Date '%s' could not be parsed. Example: -d 2017-01-31\n",
+			"date '%s' could not be parsed. Example: -d 2017-01-31\n",
 			*date_str,
 		)
 	}
@@ -95,7 +95,7 @@ func main() {
 		config.Auth.Username,
 		password,
 	)
-	kingpin.FatalIfError(err, "Login request failed")
+	kingpin.FatalIfError(err, "login request failed")
 	log.Printf("%+v\n", resp)
 
 	defer resp.Body.Close()
@@ -103,7 +103,7 @@ func main() {
 	log.Println(string(body))
 
 	resp, err = timetask.SubmitTimeEntry(*client, time_entry)
-	kingpin.FatalIfError(err, "Time entry submission request failed")
+	kingpin.FatalIfError(err, "time entry submission request failed")
 	log.Printf("%+v\n", resp)
 
 	defer resp.Body.Close()
