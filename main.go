@@ -42,6 +42,7 @@ func main() {
 	)
 	write_config := kingpin.Flag("write-config", write_config_description).
 		Bool()
+	list_modules := kingpin.Flag("list-modules", "List sprints with IDs").Bool()
 	kingpin.Version(VERSION)
 	kingpin.Parse()
 
@@ -106,6 +107,15 @@ func main() {
 	) {
 		kingpin.Errorf("TimeTask authentication failed")
 		os.Exit(1)
+	}
+
+	// List modules
+	if *list_modules {
+		modules, err := timetask.RequestModules(*client, time_entry)
+		kingpin.FatalIfError(err, "could not retrieve sprints")
+		fmt.Println(modules)
+
+		os.Exit(0)
 	}
 
 	resp, err = timetask.SubmitTimeEntry(*client, time_entry)

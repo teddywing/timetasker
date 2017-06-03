@@ -1,6 +1,9 @@
 package timetask
 
 import (
+	"bytes"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -125,4 +128,52 @@ func buildSubmissionParams(time_entry TimeEntry) url.Values {
 	v.Set("f_entryIndexes", "0")
 
 	return v
+}
+
+func RequestModules(
+	client http.Client,
+	time_entry TimeEntry,
+) (string, error) {
+	params := url.Values{
+		"module":        {"projects"},
+		"action":        {"listmodulesxref"},
+		"f_ID":          {strconv.Itoa(time_entry.Project)},
+		"f_active":      {"t"},
+		"f_clientID":    {strconv.Itoa(time_entry.Client)},
+		"f_personID":    {strconv.Itoa(time_entry.PersonID)},
+		"f_milestoneID": {""},
+	}
+	modules_url, err := url.Parse(baseURL)
+	if err != nil {
+		return "", err
+	}
+
+	modules_url.RawQuery = params.Encode()
+
+	resp, err := client.Get(modules_url.String())
+	if err != nil {
+		return "", err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	response_body := string(body)
+
+	modules, err := ModuleParseXML(response_body)
+	if err != nil {
+		return "", err
+	}
+
+	var module_buf bytes.Buffer
+	module_buf.WriteString("ID\tModule\n")
+	for _, module := range modules {
+		module_buf.WriteString(
+			fmt.Sprintf("%d\t%s\n", module.ID, module.Name),
+		)
+	}
+
+	return module_buf.String(), nil
 }
