@@ -29,6 +29,7 @@ var config Config
 func main() {
 	var err error
 
+	MaybeWriteConfig()
 	loadConfig()
 
 	// Parse command line arguments
