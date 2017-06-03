@@ -19,7 +19,7 @@ var config Config
 func main() {
 	var err error
 
-	err = MaybeWriteConfig()
+	err = maybeWriteConfig()
 	if err != nil {
 		fmt.Println("Could not write config file")
 		fmt.Println(err)

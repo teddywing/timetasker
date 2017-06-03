@@ -38,7 +38,7 @@ work_type = # ADD WORK TYPE ID
 billable = true
 `
 
-func MaybeWriteConfig() error {
+func maybeWriteConfig() error {
 	path := xdg.FindConfig("timetasker/config.toml")
 
 	if path == "" {
