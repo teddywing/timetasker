@@ -9,22 +9,12 @@ import (
 	"github.com/teddywing/timetasker/timetask"
 
 	"github.com/BurntSushi/toml"
-	"gopkg.in/yaml.v2"
 )
-
-// type Config struct {
-// 	Auth struct {
-// 		Username    string
-// 		PasswordCmd string `yaml:"password_cmd"`
-// 	}
-// 	Fields   timetask.Fields
-// 	Defaults timetask.TimeEntry
-// }
 
 type Config struct {
 	Auth struct {
 		Username    string
-		PasswordCmd string //`toml:"password_cmd"`
+		PasswordCmd string
 	}
 	Projects map[string]interface{}
 }
@@ -33,8 +23,6 @@ var config Config
 
 func main() {
 	loadConfig()
-	log.Printf("%+v", config)
-	return
 
 	if len(os.Args) == 1 {
 		fmt.Println("Not enough arguments")
@@ -61,7 +49,6 @@ func main() {
 }
 
 func loadConfig() {
-	// config_str, err := ioutil.ReadFile("config2.toml")
 	config = Config{}
 	_, err := toml.DecodeFile("config2.toml", &config)
 	if err != nil {
