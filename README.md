@@ -22,6 +22,15 @@ Now we specify a date and add a description:
 
 	$ timetasker --project example --date 2017-05-31 --description "Worked on Timetasker"
 
+And because it's a shell command, we can combine it with other commands. Let's
+create a week's worth of time entries starting on Monday May 29th, 2017:
+
+	$ for d in $(ruby -e "require 'date'
+	> d = Date.new(2017, 5, 29)
+	> (0..4).each { |i| puts (d + i).strftime('%Y-%m-%d') }");
+	>   do timetasker --project example --date $d;
+	> done
+
 
 ## Configuration
 Timetasker relies on a configuration file in order to work properly.
