@@ -20,7 +20,9 @@ Here we set a custom time of 4.5 hours:
 
 Now we specify a date and add a description:
 
-	$ timetasker --project example --date 2017-05-31 --description "Worked on Timetasker"
+	$ timetasker --project example \
+	>     --date 2017-05-31 \
+	>     --description "Worked on Timetasker"
 
 And because it's a shell command, we can combine it with other commands. Let's
 create a week's worth of time entries starting on Monday May 29th, 2017:
