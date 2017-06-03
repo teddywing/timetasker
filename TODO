@@ -1,11 +1,11 @@
 TODO
 
 2017.06.03:
-- Command line arguments:
-	- Project alias (required)
-	- Time (required)
-	- Date (optional, format: 2017-01-31)
-	- Description (optional)
+v Command line arguments: (2017.06.03)
+	v Project alias (required)
+	v Time (required)
+	v Date (optional, format: 2017-01-31)
+	v Description (optional)
 
 - Handle failing responses from the server (show errors to the user)
 - Config
