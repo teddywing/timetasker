@@ -46,6 +46,14 @@ func main() {
 	kingpin.Parse()
 
 	// Submit time entry
+	time_entry := timetask.NewTimeEntry(
+		config.Profile,
+		config.Projects[*project_alias],
+		time.Now(),
+		*time_spent,
+		*description,
+	)
+
 	resp, client, err := timetask.Login(
 		config.Auth.Username,
 		config.Auth.PasswordCmd,
@@ -59,13 +67,6 @@ func main() {
 	body, err := ioutil.ReadAll(resp.Body)
 	log.Println(string(body))
 
-	time_entry := timetask.NewTimeEntry(
-		config.Profile,
-		config.Projects["example"],
-		time.Now(),
-		7,
-		"timetasker test",
-	)
 	resp, err = timetask.SubmitTimeEntry(*client, time_entry)
 	if err != nil {
 		log.Fatalln(err)
