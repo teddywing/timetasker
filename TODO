@@ -16,7 +16,7 @@ v Config (2017.06.03)
 
 v Make `PasswordCmd` work
 
-- Request and list module IDs and names for a given project alias
+v Request and list module IDs and names for a given project alias (2017.06.03)
 
 v Format float error ("700") (2017.06.03)
 
