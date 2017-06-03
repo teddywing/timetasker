@@ -12,15 +12,21 @@ import (
 	"golang.org/x/net/publicsuffix"
 )
 
-func Login(username, password string) (resp *http.Response, err error) {
+var baseURL string = "https://af83.timetask.com/index.php"
+
+func Login(username, password string) (
+	resp *http.Response,
+	client *http.Client,
+	err error,
+) {
 	cookies, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	client := http.Client{Jar: cookies}
+	client = &http.Client{Jar: cookies}
 	resp, err = client.PostForm(
-		"https://af83.timetask.com/index.php",
+		baseURL,
 		url.Values{
 			"module":     {"people"},
 			"action":     {"loginsubmit"},
@@ -30,21 +36,30 @@ func Login(username, password string) (resp *http.Response, err error) {
 		},
 	)
 	if err != nil {
-		return resp, err
+		return resp, client, err
 	}
 
-	return resp, err
+	return resp, client, err
 }
 
 func SubmitTimeEntry(
+	client http.Client,
 	time_entry TimeEntry,
 ) (resp *http.Response, err error) {
-	v := buildSubmissionParams(time_entry)
+	values := buildSubmissionParams(time_entry)
 
-	v.Set("module", "time")
-	v.Set("action", "submitmultipletime")
+	values.Set("module", "time")
+	values.Set("action", "submitmultipletime")
 
-	return nil, nil
+	resp, err = client.PostForm(
+		baseURL,
+		values,
+	)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
 
 
