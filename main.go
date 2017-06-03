@@ -20,7 +20,7 @@ func main() {
 	var err error
 
 	err = loadConfig()
-	kingpin.FatalIfError(err, "Could not load config file")
+	kingpin.FatalIfError(err, "could not load config file, try --write-config")
 
 	// Parse command line arguments
 	project_alias := kingpin.Flag(
