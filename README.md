@@ -4,8 +4,8 @@ Timetasker CLI
 Provides a nice command line interface to submit time sheets using [Time
 Task][1]. This command will submit a single time entry.
 
-The project improves upon a [Chrome extension][2] that auto-fills the time sheet
-form on the website.
+The project vastly improves upon a [Chrome extension][2] that auto-fills the
+time sheet form on the website.
 
 
 ## Usage
