@@ -9,27 +9,22 @@ import (
 
 	"github.com/teddywing/timetasker/timetask"
 
-	"github.com/BurntSushi/toml"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var VERSION string = "0.1.0"
-
-type Config struct {
-	Auth struct {
-		Username    string
-		PasswordCmd string `toml:"password_cmd"`
-	}
-	Profile  timetask.Profile
-	Projects map[string]timetask.Project
-}
 
 var config Config
 
 func main() {
 	var err error
 
-	loadConfig()
+	err = loadConfig()
+	if err != nil {
+		fmt.Println("Could not load config file")
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	// Parse command line arguments
 	project_alias := kingpin.Flag(
@@ -37,7 +32,6 @@ func main() {
 		"Project alias defined in config.toml.",
 	).
 		Short('p').
-		Required().
 		String()
 	time_spent := kingpin.Flag("time", "Time spent working on project.").
 		Short('t').
@@ -49,9 +43,29 @@ func main() {
 	description := kingpin.Flag("description", "Description of work.").
 		Short('m').
 		String()
+	 write_config_description := fmt.Sprintf(
+		"Initialise a new config file template at %s",
+		configFile(),
+	)
+	write_config := kingpin.Flag("write-config", write_config_description).
+		Bool()
 	kingpin.Version(VERSION)
 	kingpin.Parse()
 
+	if *project_alias == "" && !*write_config {
+		kingpin.Fatalf("required flag --project not provided, try --help")
+	}
+
+	if *write_config {
+		err = maybeWriteConfig()
+		if err != nil {
+			fmt.Println("Could not write config file")
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		os.Exit(0)
+	}
 	// Submit time entry
 	project, ok := config.Projects[*project_alias]
 	if !ok {
@@ -102,12 +116,4 @@ func main() {
 	defer resp.Body.Close()
 	body, err = ioutil.ReadAll(resp.Body)
 	log.Println(string(body))
-}
-
-func loadConfig() {
-	config = Config{}
-	_, err := toml.DecodeFile("config2.toml", &config)
-	if err != nil {
-		log.Println(err)
-	}
 }
