@@ -39,7 +39,7 @@ func main() {
 	description := kingpin.Flag("description", "Description of work.").
 		Short('m').
 		String()
-	 write_config_description := fmt.Sprintf(
+	write_config_description := fmt.Sprintf(
 		"Initialise a new config file template at %s",
 		configFile(),
 	)
