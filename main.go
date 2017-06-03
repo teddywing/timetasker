@@ -19,13 +19,6 @@ var config Config
 func main() {
 	var err error
 
-	err = maybeWriteConfig()
-	if err != nil {
-		fmt.Println("Could not write config file")
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
 	err = loadConfig()
 	if err != nil {
 		fmt.Println("Could not load config file")
@@ -51,8 +44,23 @@ func main() {
 	description := kingpin.Flag("description", "Description of work.").
 		Short('m').
 		String()
+	 write_config_description := fmt.Sprintf(
+		"Initialise a new config file template at %s",
+		configFile(),
+	)
+	write_config := kingpin.Flag("write-config", write_config_description).
+		Bool()
 	kingpin.Version(VERSION)
 	kingpin.Parse()
+
+	if *write_config {
+		err = maybeWriteConfig()
+		if err != nil {
+			fmt.Println("Could not write config file")
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	}
 
 	// Submit time entry
 	project, ok := config.Projects[*project_alias]
