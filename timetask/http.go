@@ -123,5 +123,7 @@ func buildSubmissionParams(time_entry TimeEntry) url.Values {
 		time_entry.Description,
 	)
 
+	v.Set("f_entryIndexes", "0")
+
 	return v
 }
