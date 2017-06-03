@@ -1,0 +1,16 @@
+TODO
+
+2017.06.03:
+- Command line arguments:
+	- Project alias (required)
+	- Time (required)
+	- Date (optional, format: 2017-01-31)
+	- Description (optional)
+
+- Handle failing responses from the server (show errors to the user)
+- Config
+	- A `--write-config` or similar option that generates and write a bare
+	  config for users to use
+	- Load the config from XDG
+
+- Make `PasswordCmd` work
