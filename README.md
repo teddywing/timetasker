@@ -71,8 +71,8 @@ to that project like this:
 
 	$ timetasker --project my-cool-project
 
-You say you have more than one project? No problem, just copy-paste the entire
-`[projects.example]` section and give it a new name.
+You say you have more than one project? No problem, just copy-paste an
+additional `[projects.example]` section and give it a new name.
 
 To fill in the other configuration options, we're going to have to take a trip
 to the TimeTask website (relax, we won't be using it much after this).
