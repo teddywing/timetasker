@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
+	// "fmt"
+	// "io/ioutil"
 	"log"
-	"os"
+	// "os"
 
-	"github.com/teddywing/timetasker/timetask"
+	// "github.com/teddywing/timetasker/timetask"
 
 	"github.com/BurntSushi/toml"
 )
@@ -24,24 +24,24 @@ var config Config
 func main() {
 	loadConfig()
 
-	if len(os.Args) == 1 {
-		fmt.Println("Not enough arguments")
-		os.Exit(1)
-	}
+	// if len(os.Args) == 1 {
+	// 	fmt.Println("Not enough arguments")
+	// 	os.Exit(1)
+	// }
+	//
+	// file_path := os.Args[len(os.Args)-1]
+	// file, err := ioutil.ReadFile(file_path)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 
-	file_path := os.Args[len(os.Args)-1]
-	file, err := ioutil.ReadFile(file_path)
-	if err != nil {
-		log.Println(err)
-	}
-
-	time_entries := []timetask.TimeEntry{}
-	err = yaml.Unmarshal(file, &time_entries)
-	if err != nil {
-		log.Println(err)
-	}
-
-	log.Printf("%+v", time_entries)
+	// time_entries := []timetask.TimeEntry{}
+	// err = yaml.Unmarshal(file, &time_entries)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	//
+	// log.Printf("%+v", time_entries)
 
 	// timetask.SubmitTimeEntries(config.Fields, time_entries)
 
