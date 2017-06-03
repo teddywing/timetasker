@@ -10,7 +10,7 @@ type TimeEntry struct {
 	Task        int
 	WorkType    int
 	Date        time.Time
-	Time        int
+	Time        float64
 	Billable    bool
 	Description string
 }
@@ -19,7 +19,7 @@ func NewTimeEntry(
 	profile Profile,
 	project Project,
 	date time.Time,
-	time int,
+	time float64,
 	description string,
 ) TimeEntry {
 	return TimeEntry{

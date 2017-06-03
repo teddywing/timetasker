@@ -5,6 +5,7 @@ import (
 	"net/http/cookiejar"
 	"net/url"
 	"strconv"
+	"strings"
 
 	"golang.org/x/net/publicsuffix"
 )
@@ -97,9 +98,11 @@ func buildSubmissionParams(time_entry TimeEntry) url.Values {
 		time_entry.Date.Format("02/01/06"), // day/month/year
 	)
 
+	time_str := strconv.FormatFloat(time_entry.Time, 'f', 2, 64)
+	time_european_format := strings.Replace(time_str, ".", ",", 0)
 	v.Set(
 		"f_time0",
-		strconv.Itoa(time_entry.Time),
+		time_european_format,
 	)
 
 	var billable string

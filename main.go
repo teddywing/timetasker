@@ -40,7 +40,7 @@ func main() {
 	time_spent := kingpin.Flag("time", "Time spent working on project.").
 		Short('t').
 		Default("7").
-		Int()
+		Float()
 	date_str := kingpin.Flag("date", "Date when work was done (e.g. 2017-01-31)").
 		Short('d').
 		String()
