@@ -39,7 +39,7 @@ func main() {
 	description := kingpin.Flag("description", "Description of work.").
 		Short('m').
 		String()
-	 write_config_description := fmt.Sprintf(
+	write_config_description := fmt.Sprintf(
 		"Initialise a new config file template at %s",
 		configFile(),
 	)
@@ -87,9 +87,12 @@ func main() {
 		*description,
 	)
 
+	password, err := passwordCmd(config.Auth.PasswordCmd)
+	kingpin.FatalIfError(err, "password command failed")
+
 	resp, client, err := timetask.Login(
 		config.Auth.Username,
-		config.Auth.PasswordCmd,
+		password,
 	)
 	kingpin.FatalIfError(err, "Login request failed")
 	log.Printf("%+v\n", resp)
