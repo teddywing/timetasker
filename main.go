@@ -87,9 +87,12 @@ func main() {
 		*description,
 	)
 
+	password, err := passwordCmd(config.Auth.PasswordCmd)
+	kingpin.FatalIfError(err, "password command failed")
+
 	resp, client, err := timetask.Login(
 		config.Auth.Username,
-		config.Auth.PasswordCmd,
+		password,
 	)
 	kingpin.FatalIfError(err, "Login request failed")
 	log.Printf("%+v\n", resp)
