@@ -96,6 +96,18 @@ Once you have a complete config file, you should be all set to start posting
 time entries!
 
 
+## Install
+Visit the [releases][3] page, download the version corresponding to your
+platform, and put the resulting `timetasker` binary on your PATH.
+
+To install from source, use:
+
+	$ go install github.com/teddywing/timetasker
+
+
 ## License
 Copyright © 2017 Teddy Wing. Licensed under the GNU GPLv3+ (see the included
 COPYING file).
+
+
+[3]: https://github.com/teddywing/timetasker/releases
