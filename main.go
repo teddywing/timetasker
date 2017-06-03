@@ -25,6 +25,8 @@ type Config struct {
 var config Config
 
 func main() {
+	var err error
+
 	loadConfig()
 
 	// Parse command line arguments
@@ -39,7 +41,7 @@ func main() {
 		Short('t').
 		Default("7").
 		Int()
-	date := kingpin.Flag("date", "Date when work was done (e.g. 2017-01-31)").
+	date_str := kingpin.Flag("date", "Date when work was done (e.g. 2017-01-31)").
 		Short('d').
 		String()
 	description := kingpin.Flag("description", "Description of work.").
@@ -55,10 +57,23 @@ func main() {
 		os.Exit(1)
 	}
 
+	var date time.Time
+
+	// If the date argument isn't sent, default to today
+	if *date_str == "" {
+		date = time.Now()
+	} else {
+		date, err = time.Parse("2006-01-02", *date_str)
+		if err != nil {
+			fmt.Printf("Date '%s' could not be parsed. Example: -d 2017-01-31\n", *date_str)
+			os.Exit(1)
+		}
+	}
+
 	time_entry := timetask.NewTimeEntry(
 		config.Profile,
 		project,
-		time.Now(),
+		date,
 		*time_spent,
 		*description,
 	)
