@@ -1,6 +1,7 @@
 package timetask
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -125,4 +126,39 @@ func buildSubmissionParams(time_entry TimeEntry) url.Values {
 	v.Set("f_entryIndexes", "0")
 
 	return v
+}
+
+func RequestModules(
+	client http.Client,
+	time_entry TimeEntry,
+) (string, error) {
+	params := url.Values{
+		"module":        {"projects"},
+		"action":        {"listmodulesxref"},
+		"f_ID":          {strconv.Itoa(time_entry.Project)},
+		"f_active":      {"t"},
+		"f_clientID":    {strconv.Itoa(time_entry.Client)},
+		"f_personID":    {strconv.Itoa(time_entry.PersonID)},
+		"f_milestoneID": {""},
+	}
+	modules_url, err := url.Parse(baseURL)
+	if err != nil {
+		return "", err
+	}
+
+	modules_url.RawQuery = params.Encode()
+
+	resp, err := client.Get(modules_url.String())
+	if err != nil {
+		return "", err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	response_body := string(body)
+
+	return response_body, nil
 }
