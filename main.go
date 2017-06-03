@@ -9,20 +9,10 @@ import (
 
 	"github.com/teddywing/timetasker/timetask"
 
-	"github.com/BurntSushi/toml"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var VERSION string = "0.1.0"
-
-type Config struct {
-	Auth struct {
-		Username    string
-		PasswordCmd string `toml:"password_cmd"`
-	}
-	Profile  timetask.Profile
-	Projects map[string]timetask.Project
-}
 
 var config Config
 
@@ -109,12 +99,4 @@ func main() {
 	defer resp.Body.Close()
 	body, err = ioutil.ReadAll(resp.Body)
 	log.Println(string(body))
-}
-
-func loadConfig() {
-	config = Config{}
-	_, err := toml.DecodeFile("config2.toml", &config)
-	if err != nil {
-		log.Println(err)
-	}
 }

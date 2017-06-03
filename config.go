@@ -5,8 +5,20 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/teddywing/timetasker/timetask"
+
+	"github.com/BurntSushi/toml"
 	"github.com/goulash/xdg"
 )
+
+type Config struct {
+	Auth struct {
+		Username    string
+		PasswordCmd string `toml:"password_cmd"`
+	}
+	Profile  timetask.Profile
+	Projects map[string]timetask.Project
+}
 
 const emptyConfig = `[auth]
 username = ""
@@ -40,6 +52,16 @@ func MaybeWriteConfig() error {
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func loadConfig() error {
+	config = Config{}
+	_, err := toml.DecodeFile("config2.toml", &config)
+	if err != nil {
+		return err
 	}
 
 	return nil
