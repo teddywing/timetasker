@@ -6,7 +6,7 @@ import (
 	"log"
 	// "os"
 
-	// "github.com/teddywing/timetasker/timetask"
+	"github.com/teddywing/timetasker/timetask"
 
 	"github.com/BurntSushi/toml"
 )
@@ -16,7 +16,7 @@ type Config struct {
 		Username    string
 		PasswordCmd string
 	}
-	Projects map[string]interface{}
+	Projects map[string]timetask.Project
 }
 
 var config Config

@@ -16,6 +16,16 @@ package timetask
 // 	WorkTypes []WorkType `yaml:"work_types"`
 // }
 
+type Project struct {
+	Client   int
+	Project  int
+	Module   int
+	Task     int
+	WorkType int
+	Time     int
+	Billable bool
+}
+
 // type Module struct {
 // 	ID   int
 // 	Name string
