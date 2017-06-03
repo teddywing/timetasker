@@ -2,7 +2,9 @@ package main
 
 import (
 	"io/ioutil"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/teddywing/timetasker/timetask"
@@ -46,9 +48,15 @@ func main() {
 	kingpin.Parse()
 
 	// Submit time entry
+	project, ok := config.Projects[*project_alias]
+	if !ok {
+		fmt.Printf("Project '%s' not found\n", *project_alias)
+		os.Exit(1)
+	}
+
 	time_entry := timetask.NewTimeEntry(
 		config.Profile,
-		config.Projects[*project_alias],
+		project,
 		time.Now(),
 		*time_spent,
 		*description,
