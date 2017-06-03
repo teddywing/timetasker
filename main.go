@@ -60,8 +60,9 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-	}
 
+		os.Exit(0)
+	}
 	// Submit time entry
 	project, ok := config.Projects[*project_alias]
 	if !ok {
