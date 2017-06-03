@@ -40,6 +40,7 @@ func main() {
 		Default("7").
 		Int()
 	date := kingpin.Flag("date", "Date when work was done (e.g. 2017-01-31)").
+		Short('d').
 		String()
 	description := kingpin.Flag("description", "Description of work.").
 		Short('m').
