@@ -45,6 +45,7 @@ func main() {
 	kingpin.Version(VERSION)
 	kingpin.Parse()
 
+	// Error if no --project unless --write-config was passed
 	if *project_alias == "" && !*write_config {
 		kingpin.Fatalf("required flag --project not provided, try --help")
 	}
