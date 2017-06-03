@@ -2,7 +2,7 @@ package main
 
 import (
 	// "fmt"
-	// "io/ioutil"
+	"io/ioutil"
 	"log"
 	// "os"
 	"time"
@@ -35,6 +35,10 @@ func main() {
 	}
 	log.Printf("%+v\n", resp)
 
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	log.Println(string(body))
+
 	time_entry := timetask.NewTimeEntry(
 		config.Profile,
 		config.Projects["example"],
@@ -47,6 +51,10 @@ func main() {
 		log.Fatalln(err)
 	}
 	log.Printf("%+v\n", resp)
+
+	defer resp.Body.Close()
+	body, err = ioutil.ReadAll(resp.Body)
+	log.Println(string(body))
 
 	// if len(os.Args) == 1 {
 	// 	fmt.Println("Not enough arguments")
