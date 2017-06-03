@@ -9,7 +9,7 @@ v Command line arguments: (2017.06.03)
 
 - Handle failing responses from the server (show errors to the user)
 - Config
-	- A `--write-config` or similar option that generates and write a bare
+	v A `--write-config` or similar option that generates and write a bare
 	  config for users to use
 	- Load the config from XDG
 
