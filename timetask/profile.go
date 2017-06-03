@@ -1,5 +1,5 @@
 package timetask
 
 type Profile struct {
-	PersonID int
+	PersonID int `toml:"person_id"`
 }

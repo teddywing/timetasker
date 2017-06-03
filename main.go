@@ -16,6 +16,7 @@ type Config struct {
 		Username    string
 		PasswordCmd string
 	}
+	Profile timetask.Profile
 	Projects map[string]timetask.Project
 }
 
