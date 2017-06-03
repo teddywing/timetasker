@@ -15,18 +15,14 @@ import (
 
 var baseURL string = "https://af83.timetask.com/index.php"
 
-func Login(username, password string) (
-	resp *http.Response,
-	client *http.Client,
-	err error,
-) {
+func Login(username, password string) (client *http.Client, err error) {
 	cookies, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	client = &http.Client{Jar: cookies}
-	resp, err = client.PostForm(
+	resp, err := client.PostForm(
 		baseURL,
 		url.Values{
 			"module":     {"people"},
@@ -37,30 +33,53 @@ func Login(username, password string) (
 		},
 	)
 	if err != nil {
-		return resp, client, err
+		return client, err
 	}
 
-	return resp, client, err
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return client, err
+	}
+
+	if strings.Contains(
+		string(body),
+		"The username and password don't appear to be valid.",
+	) {
+		return client, fmt.Errorf("TimeTask authentication failed")
+	}
+
+	return client, err
 }
 
-func SubmitTimeEntry(
-	client http.Client,
-	time_entry TimeEntry,
-) (resp *http.Response, err error) {
+func SubmitTimeEntry(client http.Client, time_entry TimeEntry) error {
 	values := buildSubmissionParams(time_entry)
 
 	values.Set("module", "time")
 	values.Set("action", "submitmultipletime")
 
-	resp, err = client.PostForm(
+	resp, err := client.PostForm(
 		baseURL,
 		values,
 	)
 	if err != nil {
-		return resp, err
+		return err
 	}
 
-	return resp, nil
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if strings.Contains(
+		string(body),
+		"No time entries were created.",
+	) {
+		return fmt.Errorf("time entry creation failed")
+	}
+
+	return nil
 }
 
 func buildSubmissionParams(time_entry TimeEntry) url.Values {

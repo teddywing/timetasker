@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/teddywing/timetasker/timetask"
@@ -93,21 +91,11 @@ func main() {
 	password, err := passwordCmd(config.Auth.PasswordCmd)
 	kingpin.FatalIfError(err, "password command failed")
 
-	resp, client, err := timetask.Login(
+	client, err := timetask.Login(
 		config.Auth.Username,
 		password,
 	)
 	kingpin.FatalIfError(err, "login request failed")
-
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if strings.Contains(
-		string(body),
-		"The username and password don't appear to be valid.",
-	) {
-		kingpin.Errorf("TimeTask authentication failed")
-		os.Exit(1)
-	}
 
 	// List modules
 	if *list_modules {
@@ -118,16 +106,6 @@ func main() {
 		os.Exit(0)
 	}
 
-	resp, err = timetask.SubmitTimeEntry(*client, time_entry)
+	err = timetask.SubmitTimeEntry(*client, time_entry)
 	kingpin.FatalIfError(err, "time entry submission request failed")
-
-	defer resp.Body.Close()
-	body, err = ioutil.ReadAll(resp.Body)
-	if strings.Contains(
-		string(body),
-		"No time entries were created.",
-	) {
-		kingpin.Errorf("time entry creation failed")
-		os.Exit(1)
-	}
 }
