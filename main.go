@@ -29,7 +29,13 @@ var config Config
 func main() {
 	var err error
 
-	MaybeWriteConfig()
+	err = MaybeWriteConfig()
+	if err != nil {
+		fmt.Println("Could not write config file")
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	loadConfig()
 
 	// Parse command line arguments
