@@ -106,6 +106,22 @@ Once you have a complete config file, you should be all set to start posting
 time entries!
 
 
+Eventually, you'll have to update the `module` value in your configuration file
+to align with the current sprint. Instead of visiting the website to get the new
+ID of the `module`, the modules of a project can be listed from the program:
+
+	$ timetasker --project example --list-modules
+
+This produces the following output:
+
+	ID        Module
+	77777     Sprint 1
+	222222    Sprint 2
+
+The correct sprint ID can then be easily copied from this list into
+`config.toml`.
+
+
 ## Install
 Visit the [releases][3] page, download the version corresponding to your
 platform, and put the resulting `timetasker` binary on your PATH.
