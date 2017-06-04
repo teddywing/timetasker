@@ -1,8 +1,9 @@
 package timetask
 
 import (
+	"bytes"
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -12,15 +13,17 @@ import (
 	"golang.org/x/net/publicsuffix"
 )
 
-func Login(username, password string) (resp *http.Response, err error) {
+var baseURL string = "https://af83.timetask.com/index.php"
+
+func Login(username, password string) (client *http.Client, err error) {
 	cookies, err := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	if err != nil {
 		return nil, err
 	}
 
-	client := http.Client{Jar: cookies}
-	resp, err = client.PostForm(
-		"https://af83.timetask.com/index.php",
+	client = &http.Client{Jar: cookies}
+	resp, err := client.PostForm(
+		baseURL,
 		url.Values{
 			"module":     {"people"},
 			"action":     {"loginsubmit"},
@@ -30,112 +33,166 @@ func Login(username, password string) (resp *http.Response, err error) {
 		},
 	)
 	if err != nil {
-		return resp, err
+		return client, err
 	}
 
-	return resp, err
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return client, err
+	}
+
+	if strings.Contains(
+		string(body),
+		"The username and password don't appear to be valid.",
+	) {
+		return client, fmt.Errorf("TimeTask authentication failed")
+	}
+
+	return client, err
 }
 
-func SubmitTimeEntries(fields Fields, time_entries []TimeEntry) (resp *http.Response, err error) {
-	v := buildSubmissionParams(fields, time_entries)
+func SubmitTimeEntry(client http.Client, time_entry TimeEntry) error {
+	values := buildSubmissionParams(time_entry)
 
-	v.Set("module", "time")
-	v.Set("action", "submitmultipletime")
+	values.Set("module", "time")
+	values.Set("action", "submitmultipletime")
 
-	return nil, nil
+	resp, err := client.PostForm(
+		baseURL,
+		values,
+	)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if strings.Contains(
+		string(body),
+		"No time entries were created.",
+	) {
+		return fmt.Errorf("time entry creation failed")
+	}
+
+	return nil
 }
 
-func buildSubmissionParams(fields Fields, time_entries []TimeEntry) url.Values {
+func buildSubmissionParams(time_entry TimeEntry) url.Values {
 	v := url.Values{}
-	entry_indexes := []string{}
 
-	for i, entry := range time_entries {
-		entry_indexes = append(entry_indexes, strconv.Itoa(i))
+	v.Set(
+		"f_personID0",
+		strconv.Itoa(time_entry.PersonID),
+	)
 
-		client, err := fields.ClientByName(entry.Client)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_clientID0",
+		strconv.Itoa(time_entry.Client),
+	)
 
-		project, err := client.ProjectByName(entry.Project)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_projectID0",
+		strconv.Itoa(time_entry.Project),
+	)
 
-		module, err := project.ModuleByName(entry.Module)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_moduleID0",
+		strconv.Itoa(time_entry.Module),
+	)
 
-		task, err := project.TaskByName(entry.Task)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_taskID0",
+		strconv.Itoa(time_entry.Task),
+	)
 
-		work_type, err := project.WorkTypeByName(entry.WorkType)
-		if err != nil {
-			log.Panic(err)
-		}
+	v.Set(
+		"f_worktypeID0",
+		strconv.Itoa(time_entry.WorkType),
+	)
 
-		var billable string
-		if entry.Billable {
-			billable = "t"
-		} else {
-			billable = "f"
-		}
+	v.Set(
+		"f_date0",
+		time_entry.Date.Format("02/01/06"), // day/month/year
+	)
 
-		v.Set(
-			fmt.Sprintf("f_personID%d", i),
-			strconv.Itoa(fields.PersonID),
-		)
+	time_str := strconv.FormatFloat(time_entry.Time, 'f', 2, 64)
+	time_european_format := strings.Replace(time_str, ".", ",", -1)
+	v.Set(
+		"f_time0",
+		time_european_format,
+	)
 
-		v.Set(
-			fmt.Sprintf("f_clientID%d", i),
-			strconv.Itoa(client.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_projectID%d", i),
-			strconv.Itoa(project.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_moduleID%d", i),
-			strconv.Itoa(module.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_taskID%d", i),
-			strconv.Itoa(task.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_worktypeID%d", i),
-			strconv.Itoa(work_type.ID),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_date%d", i),
-			entry.Date.Format("02/01/06"), // day/month/year
-		)
-
-		v.Set(
-			fmt.Sprintf("f_time%d", i),
-			strconv.Itoa(entry.Time),
-		)
-
-		v.Set(
-			fmt.Sprintf("f_billable%d", i),
-			billable,
-		)
-
-		v.Set(
-			fmt.Sprintf("f_description%d", i),
-			entry.Description,
-		)
+	var billable string
+	if time_entry.Billable {
+		billable = "t"
+	} else {
+		billable = "f"
 	}
 
-	v.Set("f_entryIndexes", strings.Join(entry_indexes, ","))
+	v.Set(
+		"f_billable0",
+		billable,
+	)
+
+	v.Set(
+		"f_description0",
+		time_entry.Description,
+	)
+
+	v.Set("f_entryIndexes", "0")
 
 	return v
+}
+
+func RequestModules(
+	client http.Client,
+	time_entry TimeEntry,
+) (string, error) {
+	params := url.Values{
+		"module":        {"projects"},
+		"action":        {"listmodulesxref"},
+		"f_ID":          {strconv.Itoa(time_entry.Project)},
+		"f_active":      {"t"},
+		"f_clientID":    {strconv.Itoa(time_entry.Client)},
+		"f_personID":    {strconv.Itoa(time_entry.PersonID)},
+		"f_milestoneID": {""},
+	}
+	modules_url, err := url.Parse(baseURL)
+	if err != nil {
+		return "", err
+	}
+
+	modules_url.RawQuery = params.Encode()
+
+	resp, err := client.Get(modules_url.String())
+	if err != nil {
+		return "", err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	response_body := string(body)
+
+	modules, err := ModuleParseXML(response_body)
+	if err != nil {
+		return "", err
+	}
+
+	var module_buf bytes.Buffer
+	module_buf.WriteString("ID\tModule\n")
+	for _, module := range modules {
+		module_buf.WriteString(
+			fmt.Sprintf("%d\t%s\n", module.ID, module.Name),
+		)
+	}
+
+	return module_buf.String(), nil
 }
