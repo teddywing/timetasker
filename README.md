@@ -81,7 +81,7 @@ to the TimeTask website (relax, we won't be using it much after this).
 2. Fill in a single entry, but don't submit it yet
 3. Open the Network console in your browser's developer tools
 4. Submit your time entry
-5. Open the POST request to `https://*.timetask.com/index.php`
+5. View the POST request to `https://*.timetask.com/index.php`
 6. Take a look at the form data of the request
 
 You should see something like this:
