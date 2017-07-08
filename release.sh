@@ -30,6 +30,8 @@ for target in $TARGETS; do
 	GOARCH="$arch" \
 		go build -v
 
-	tar cjvf "timetasker_${VERSION}_${os}_${arch}.tar.bz2" timetasker
+	tar cjvf "timetasker_${VERSION}_${os}_${arch}.tar.bz2" \
+		timetasker \
+		timetasker.bash-completion
 	mv "timetasker_${VERSION}_${os}_${arch}.tar.bz2" dist
 done
