@@ -1,0 +1,20 @@
+# Bash completion for timetasker
+
+_timetasker () {
+	local cur
+	local previous
+	local config_file=~/.config/timetasker/config.toml
+	local projects=$(sed -n -e 's/\]//' -e 's/\[projects\.//p' "$config_file")
+
+	COMPREPLY=()
+	cur=${COMP_WORDS[COMP_CWORD]}
+	previous=${COMP_WORDS[COMP_CWORD - 1]}
+
+	if [ "$previous" == '-p' ]; then
+		COMPREPLY=( $(compgen -W "$projects" -- $cur) )
+	fi
+
+	return 0
+}
+
+complete -o default -F _timetasker timetasker
