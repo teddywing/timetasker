@@ -10,7 +10,7 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-var VERSION string = "0.1.0"
+const VERSION string = "0.1.1"
 
 var config Config
 
