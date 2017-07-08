@@ -130,6 +130,11 @@ To install from source, use:
 
 	$ go install github.com/teddywing/timetasker
 
+Bash completion is available for project aliases. To take advantage of it,
+source the completion file in your Bash profile:
+
+	$ source ~/path/to/timetasker.bash-completion
+
 
 ## License
 Copyright © 2017 Teddy Wing. Licensed under the GNU GPLv3+ (see the included
