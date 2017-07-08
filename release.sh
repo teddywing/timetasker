@@ -1,5 +1,7 @@
 #!/bin/sh
 
+VERSION=0.1.0
+
 mkdir -p dist
 
 TARGETS="
@@ -28,6 +30,6 @@ for target in $TARGETS; do
 	GOARCH="$arch" \
 		go build -v
 
-	tar cjvf "timetasker_${os}_${arch}.tar.bz2" timetasker
-	mv "timetasker_${os}_${arch}.tar.bz2" dist
+	tar cjvf "timetasker_${VERSION}_${os}_${arch}.tar.bz2" timetasker
+	mv "timetasker_${VERSION}_${os}_${arch}.tar.bz2" dist
 done
