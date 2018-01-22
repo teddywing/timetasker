@@ -117,7 +117,7 @@ func buildSubmissionParams(time_entry TimeEntry) url.Values {
 
 	v.Set(
 		"f_date0",
-		time_entry.Date.Format("02/01/06"), // day/month/year
+		time_entry.Date.Format("01/02/06"), // month/day/year
 	)
 
 	time_str := strconv.FormatFloat(time_entry.Time, 'f', 2, 64)
