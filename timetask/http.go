@@ -76,7 +76,7 @@ func SubmitTimeEntry(client http.Client, time_entry TimeEntry) error {
 		string(body),
 		"No time entries were created.",
 	) {
-		return fmt.Errorf("time entry creation failed")
+		return fmt.Errorf("time entry creation failed\nResponse: %s", body)
 	}
 
 	return nil
