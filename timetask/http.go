@@ -121,10 +121,9 @@ func buildSubmissionParams(time_entry TimeEntry) url.Values {
 	)
 
 	time_str := strconv.FormatFloat(time_entry.Time, 'f', 2, 64)
-	time_european_format := strings.Replace(time_str, ".", ",", -1)
 	v.Set(
 		"f_time0",
-		time_european_format,
+		time_str,
 	)
 
 	var billable string
