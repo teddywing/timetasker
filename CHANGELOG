@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+v0.1.2 (2018-01-22):
+	* When submitting time entries, print the HTTP response in the error output
+	  to show the cause of the error.
+	* Time Task updated their form handling code last week to use U.S.-style
+	  instead of European-style localisation. Change the date and decimal time
+	  formats accordingly when submitting the form to the server.
+
 v0.1.1 (2017-07-08):
 	+ Add Bash completion
 	* Update release script
